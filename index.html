@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS 448B A3 - Santa Clara Restaurants</title>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 16px; color: #222; background: #fff; }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  #status { color: #555; margin: 4px 0 10px; }
+  #layout { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+  #map { position: relative; }
+  #map svg { border: 1px solid #000; display: block; }
+  #controls { width: 260px; }
+  fieldset { border: 1px solid #ccc; margin: 0 0 12px; padding: 8px 10px; }
+  legend { font-weight: 600; }
+  label { display: block; margin: 4px 0; }
+  input[type=range] { width: 100%; }
+  input[type=text] { width: 100%; box-sizing: border-box; padding: 4px; }
+  .val, .hint { color: #555; }
+
+  .dot { fill: #1f6fb2; fill-opacity: 0.85; }
+  .dot.off { fill: #999; fill-opacity: 0.15; pointer-events: none; }
+
+  .ring { fill: none; stroke-width: 2; pointer-events: none; }
+  .handle { cursor: move; stroke: #fff; stroke-width: 1.5; }
+  .handle-label { font: bold 12px system-ui, sans-serif; fill: #fff; pointer-events: none; text-anchor: middle; dominant-baseline: central; }
+
+  #tooltip {
+    position: absolute; pointer-events: none; background: rgba(255,255,255,0.96);
+    border: 1px solid #888; padding: 6px 8px; font-size: 12px; max-width: 260px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); display: none;
+  }
+  #tooltip b { display: block; margin-bottom: 2px; }
+  #tooltip.pinned { pointer-events: auto; }
+  #tooltip .nav { float: right; margin-left: 10px; color: #555; white-space: nowrap; }
+  #tooltip .nav button { font: inherit; padding: 0 5px; cursor: pointer; }
+  #tooltip .nav span { display: inline-block; min-width: 6.5em; text-align: center; } /* keeps the arrows still */
+  #tooltip .hint { color: #777; margin-top: 4px; }
+  .dot { cursor: pointer; }
+</style>
+</head>
+<body>
+  <h1>Santa Clara County Restaurants</h1>
+  <div id="status">Loading data...</div>
+
+  <div id="layout">
+    <div id="map"><div id="tooltip"></div></div>
+
+    <div id="controls">
+      <fieldset>
+        <legend>Query circles</legend>
+        <label>A radius <span class="val" id="radiusA-val"></span>
+          <input type="range" id="radiusA" min="0.25" max="15" step="0.25" value="3"></label>
+        <label>B radius <span class="val" id="radiusB-val"></span>
+          <input type="range" id="radiusB" min="0.25" max="15" step="0.25" value="3"></label>
+        <div class="hint">Drag a lettered center to move its circle. Only restaurants inside both circles stay blue.</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Placard color</legend>
+        <div id="placards"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Rating</legend>
+        <label>At least <span class="val" id="minRating-val"></span>
+          <input type="range" id="minRating" min="1" max="5" step="0.1" value="1"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Name or address contains</legend>
+        <input type="text" id="keyword" placeholder="e.g. Stanford, El Camino Real">
+      </fieldset>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
